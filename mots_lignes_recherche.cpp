@@ -61,7 +61,7 @@ constexpr auto normalise_char_table = []
 	Diac{'o', "ôöÔÖ"sv},
 	Diac{'u', "ùûüÙÛÜ"sv},
 	Diac{'c', "çÇ"sv},
-	Diac{'y', "ÿ"sv}
+	Diac{'y', "ÿŸ"sv}
 	}) 
 	{
 		// on fait correspondre chaque caractere simple (pair.c) avec chacune de ses variantes diacritées (c)
