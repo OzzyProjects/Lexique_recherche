@@ -25,3 +25,5 @@ sudo ./genexec.sh mots_lignes_recherche.cpp mprog
 et se lance:
 
 sudo ./mprog -SC ursus_v1.txt
+
+Le fichier ursus_v1.txt est un fichier txt d'exemple.
