@@ -17,3 +17,11 @@ Le programme prend 2 arguments :
 Deuxieme argument :
 
 Chemin du fichier texte à segmenter en un lexique (liste unique de mots)
+
+Le programme se compile ainsi :
+
+sudo ./genexec.sh mots_lignes_recherche.cpp mprog
+
+et se lance:
+
+sudo ./mprog -SC ursus_v1.txt
