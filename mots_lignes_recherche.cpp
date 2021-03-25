@@ -1,10 +1,10 @@
-/* ARMANGAU Etienne 21703622                                                                                                    *
- * mots_lignes_array_lambda -- lit un fichier en mÈmoire ligne par ligne en normalisant la ponctuation                          *
- * et genere la liste de mots classe selon l'ordre alphabÈtique, independamment de la casse et des diacritÈes                   *        
+/*                                                                                                    *
+ * mots_lignes_array_lambda -- lit un fichier en m√©moire ligne par ligne en normalisant la ponctuation                          *
+ * et genere la liste de mots classe selon l'ordre alphab√©tique, independamment de la casse et des diacrit√©es                   *        
  * donnee : contenu d'un fichier texte                                                                                          *
  * resultat: texte, vector<vector<string>>, le texte                                                                            *
  * lexique, vector<string>, la liste des mots du texte ordonnee                                                                 *
- * en fonction de l'ordre alphabetique en tenant compte des diacritÈes et sans doublons                                         *
+ * en fonction de l'ordre alphabetique en tenant compte des diacrit√©es et sans doublons                                         *
  */
  
 #include <iostream>
@@ -26,45 +26,45 @@ using ptr_str = bool (*)(const string&, const string&);
 typedef string::const_iterator str_it;
 
 // prototype des fonctions
-/* les fonctions compare et egale ont ete remplacÈes par des fonctions lambdas lignes 134 et 136 */
+/* les fonctions compare et egale ont ete remplac√©es par des fonctions lambdas lignes 134 et 136 */
 bool compareSC(const string& , const string& );
 bool egaleSC(const string& , const string& );
 char normalise_char(char);
 bool rechercheBinaire(const vector<string>&, const string&, ptr_str, ptr_str);
 
-/* constexpr est un mot clef pour dire que la variable est une expression dÈduite ‡ la compilation. C'est-‡-dire que tout le traitement effectuÈ 
- * pour l'initialiser ne se trouvera pas dans le programme final, seulement le rÈsultat (pour faire bref) = gain de temps Ènorme
- * La variable normalise_char_table est initialisÈe avec le retour d'une lambda ([]{ ... }()) qui est appelÈ directement (sur place).
+/* constexpr est un mot clef pour dire que la variable est une expression d√©duite √† la compilation. C'est-√†-dire que tout le traitement effectu√© 
+ * pour l'initialiser ne se trouvera pas dans le programme final, seulement le r√©sultat (pour faire bref) = gain de temps √©norme
+ * La variable normalise_char_table est initialis√©e avec le retour d'une lambda ([]{ ... }()) qui est appel√© directement (sur place).
  */
 constexpr auto normalise_char_table = []
 {
-	// table = un tableau de tous les caractËres possibles
+	// table = un tableau de tous les caract√®res possibles
 	std::array<char, 256> table {};
 	for (std::size_t i = 0; i < table.size(); ++i) 
 	{
 		table[static_cast<unsigned char>(i)] = char(i);
 	}
  
-	/*utilisation des string_view car un objet string_view ne stocke pas la chaÓne de caractËres en elle-mÍme
-	 *puisqu'il s'agit d'une vue sur des donnÈes non modifiables.
+	/*utilisation des string_view car un objet string_view ne stocke pas la cha√Æne de caract√®res en elle-m√™me
+	 *puisqu'il s'agit d'une vue sur des donn√©es non modifiables.
 	 *Declaration de la structure Diac qui aura pour champs :
-	 *char c = le caractere non diacritÈ correspondant
-	 *std::string_view str = la concatenation des variantes diacritÈes possibles pour ce caractere c
+	 *char c = le caractere non diacrit√© correspondant
+	 *std::string_view str = la concatenation des variantes diacrit√©es possibles pour ce caractere c
 	 */
 	struct Diac { char c; std::string_view str; };
  
 	// modification de certaines correspondances
 	for (Diac pair : {
-	Diac{'a', "‡¿‚¬"sv},
-	Diac{'e', "ÈËÍÎ…» À"sv},
-	Diac{'i', "ÓÔŒœ"sv},
-	Diac{'o', "Ùˆ‘÷"sv},
-	Diac{'u', "˘˚¸Ÿ€‹"sv},
-	Diac{'c', "Á«"sv},
-	Diac{'y', "ˇ"sv}
+	Diac{'a', "√†√Ä√¢√Ç"sv},
+	Diac{'e', "√©√®√™√´√â√à√ä√ã"sv},
+	Diac{'i', "√Æ√Ø√é√è"sv},
+	Diac{'o', "√¥√∂√î√ñ"sv},
+	Diac{'u', "√π√ª√º√ô√õ√ú"sv},
+	Diac{'c', "√ß√á"sv},
+	Diac{'y', "√ø"sv}
 	}) 
 	{
-		// on fait correspondre chaque caractere simple (pair.c) avec chacune de ses variantes diacritÈes (c)
+		// on fait correspondre chaque caractere simple (pair.c) avec chacune de ses variantes diacrit√©es (c)
 		for (char c : pair.str) 
 		{
 		table[static_cast<unsigned char>(c)] = pair.c;
@@ -91,7 +91,7 @@ int main(int argc, char **argv)
     // si une erreur s'est produite, on met fin au programme
     if (!fichier_texte.is_open())
     {
-		cerr << endl << "le fichier texte n'existe pas ou erreur ‡ l'ouverture" << endl;
+		cerr << endl << "le fichier texte n'existe pas ou erreur √† l'ouverture" << endl;
 		return 5;
 	}
 		
@@ -114,7 +114,7 @@ int main(int argc, char **argv)
 		    continue;
 		}
 		 
-		// on segmente la ligne normalisÈe 
+		// on segmente la ligne normalis√©e 
 		listeMots = split(normalisePonct(ligne));
 		texte.push_back(listeMots);
 
@@ -123,7 +123,7 @@ int main(int argc, char **argv)
 		 		 
 	}
 	
-    // choix des fonctions de comparaison ‡ utiliser selon l'option d'exÈcution 
+    // choix des fonctions de comparaison √† utiliser selon l'option d'ex√©cution 
     ptr_str cmp;
     ptr_str egl;
       
@@ -147,19 +147,19 @@ int main(int argc, char **argv)
         return 10;
     }
 
-	// mise en ordre de la liste de mots avec sort() avec la fonction sur laquelle cmp pointe en prÈdicat
+	// mise en ordre de la liste de mots avec sort() avec la fonction sur laquelle cmp pointe en pr√©dicat
 	sort(lexique.begin(), lexique.end(), cmp); 
       
     // on dedoublonne en faisant fi de la casse
     vector<string>::const_iterator it = unique(lexique.begin(), lexique.end(), egl);
     // on supprime tous les elements sauf le premier de chaque groupe d'elements consecutifs semblables avec unique()
-    // avec la fonction sur laquelle egl pointe en prÈdicat
-    // renvoie un iterateur sur le dernier element qui n'a pas ete supprimÈ.
+    // avec la fonction sur laquelle egl pointe en pr√©dicat
+    // renvoie un iterateur sur le dernier element qui n'a pas ete supprim√©.
     
     // on resize le vecteur afin qu'il contienne le nombre d'elements passes en parametre
     lexique.resize(it-lexique.begin());
     
-    // on affiche la liste dedoublonnÈe
+    // on affiche la liste dedoublonn√©e
 	cout << "\n************************" << endl;
     cout << "** lexique **" << endl;
     printVstr(lexique);
@@ -168,7 +168,7 @@ int main(int argc, char **argv)
     while (true)
 	{
 		string mot;
-		cout << "Veuillez saisir un mot ‡ rechercher dans le lexique ou [N/n] pour arreter" << endl;
+		cout << "Veuillez saisir un mot √† rechercher dans le lexique ou [N/n] pour arreter" << endl;
 		cin >> mot;
 		// l'utilisateur met fin au programme
 		if (mot == "N" || mot == "n") break;
@@ -180,22 +180,22 @@ int main(int argc, char **argv)
 	return 0;
 }// main
 
-/* normalise_char -- fonction qui normalise les caracteres diacritÈs par leur equivalents non diacritÈs                       *                            
- * et les caracteres non diacritÈs par leur forme minuscule                                                                   *
- * parametres : c, caractere ‡ normaliser                                                                                     *
- * retour : le caractere equivalent non diacritÈ en minuscule ou le caractere non diacritÈ en minuscule                       *
+/* normalise_char -- fonction qui normalise les caracteres diacrit√©s par leur equivalents non diacrit√©s                       *                            
+ * et les caracteres non diacrit√©s par leur forme minuscule                                                                   *
+ * parametres : c, caractere √† normaliser                                                                                     *
+ * retour : le caractere equivalent non diacrit√© en minuscule ou le caractere non diacrit√© en minuscule                       *
  */
 char normalise_char(char c)
 {
 	// si le caractere est en majuscule, on le met en minuscule
 	if (isupper(c)) c = tolower(c);
-	// on renvoie sa correspondance non diacritÈ et en minuscule dans le tableau normalise_char_table
+	// on renvoie sa correspondance non diacrit√© et en minuscule dans le tableau normalise_char_table
 	return normalise_char_table[static_cast<unsigned char>(c)];
 }
 
 /* compareSC -- verifie qu'une string en precede une autre dans l'ordre alphabetique *
- * insensiblement ‡ la casse et aux diacritÈes                                       *
- * parametres : string1 et string2, const string&, les 2 chaines ‡ comparer          *
+ * insensiblement √† la casse et aux diacrit√©es                                       *
+ * parametres : string1 et string2, const string&, les 2 chaines √† comparer          *
  * retour : un boolean, true si string1 < string2, false sinon                       *
  */
 bool compareSC(const string& string1, const string& string2)
@@ -204,7 +204,7 @@ bool compareSC(const string& string1, const string& string2)
     // on instancie nos interateurs au debut de chaque string
     str_it iter1 = string1.begin(), iter2 = string2.begin();
     
-    // si les deux strings ne font qu'un seul caractere et sont identiques, on met celle diacritÈe en premier dans l'ordre
+    // si les deux strings ne font qu'un seul caractere et sont identiques, on met celle diacrit√©e en premier dans l'ordre
     if (string1.size() == 1 && string2.size() == 1 && normalise_char(string1[0]) == normalise_char(string2[0])) return string1 > string2;
     
     // tant qu'on n'a pas atteint la fin de nos 2 strings
@@ -232,7 +232,7 @@ bool compareSC(const string& string1, const string& string2)
 }// compareSC
 
 /* egaleSC -- affirme que 2 strings sont egales independamment de la casse   *
- * donnees : string1 et string2, const string&, les 2 chaines √† comparer     *
+ * donnees : string1 et string2, const string&, les 2 chaines √É¬† comparer     *
  * retour : un boolean, true si string1 = string2, false sinon               *
  */
 bool egaleSC(const string& string1, const string& string2)
@@ -258,12 +258,12 @@ bool egaleSC(const string& string1, const string& string2)
 }// egaleSC
 
 
-/* RechercheBinaire : recherche une chaine donnÈe parmi les elements d'une liste de chaines    *
- * donnÈes: liste, const vector<string>&, la liste de chaines                                  *
- * mot_recherche, const string&, le mot ‡ chercher                                             *
+/* RechercheBinaire : recherche une chaine donn√©e parmi les elements d'une liste de chaines    *
+ * donn√©es: liste, const vector<string>&, la liste de chaines                                  *
+ * mot_recherche, const string&, le mot √† chercher                                             *
  * ptcmp, bool (*)(const string&, const string&), pointeur sur la fonction de comparaison <    *
  * ptegl, bool (*)(const string&, const string&), pointeur sur la fonction de comparaison =    *
- * retour : true si mot_recherche appartient ‡ la liste, false sinon                           *
+ * retour : true si mot_recherche appartient √† la liste, false sinon                           *
  */
 bool rechercheBinaire(const vector<string>& lexique, const string& mot_recherche, ptr_str ptcmp, ptr_str ptegl)
 {
@@ -273,7 +273,7 @@ bool rechercheBinaire(const vector<string>& lexique, const string& mot_recherche
 	while(true)
 	{
 		
-		// on calcule la position mÈdiane
+		// on calcule la position m√©diane
 		milieu = debut + (fin - debut)/2;
 		
 		// si la position mediane est celle du dernier element (on a pas parcouru toute la liste)
@@ -284,14 +284,14 @@ bool rechercheBinaire(const vector<string>& lexique, const string& mot_recherche
 		{
 			return true;
 		}
-		// mot_recherche < element mediant. il se trouve dans la premiere moitiÈ de la partition
-		// on va partitionner cette premiere moitiÈ
+		// mot_recherche < element mediant. il se trouve dans la premiere moiti√© de la partition
+		// on va partitionner cette premiere moiti√©
 		if (ptcmp(mot_recherche, *milieu))
 		{
 			fin = milieu;
 		}
-		// mot_recherche > element mediant. il se trouve dans la deuxieme moitiÈ de la partition
-		// on va partitionner cette deuxieme moitiÈ
+		// mot_recherche > element mediant. il se trouve dans la deuxieme moiti√© de la partition
+		// on va partitionner cette deuxieme moiti√©
 		else
 		{
 			debut = milieu + 1;
